@@ -11,7 +11,11 @@ plugins {
 
     // Apply the application plugin to add support for building a CLI application in Java.
     application
+    jacoco
 }
+
+version = "0.1"
+group = "br.com.abc"
 
 repositories {
     // Use Maven Central for resolving dependencies.
@@ -43,9 +47,45 @@ application {
     mainClass.set("br.com.abc.def.AppKt")
 }
 
+jacoco {
+    toolVersion = "0.8.10"
+}
+
 tasks.named<Test>("test") {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
 
     maxHeapSize = "512m"
+
+    finalizedBy(tasks.named("jacocoTestReport"))
+}
+
+tasks.named<JacocoReport>("jacocoTestReport") {
+    dependsOn(tasks.named("test"))
+
+    reports {
+        xml.required.set(true)
+        csv.required.set(false)
+        html.required.set(true)
+    }
+}
+
+tasks.named<JacocoCoverageVerification>("jacocoTestCoverageVerification") {
+    violationRules {
+        rule {
+            element = "BUNDLE"
+            limit {
+                minimum = "0.3".toBigDecimal()
+            }
+        }
+
+        rule {
+            element = "CLASS"
+            limit {
+                counter = "LINE"
+                value = "COVEREDRATIO"
+                minimum = "0.0".toBigDecimal()
+            }
+        }
+    }
 }

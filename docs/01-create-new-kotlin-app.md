@@ -10,6 +10,10 @@ https://docs.gradle.org/current/samples/sample_building_kotlin_applications.html
 
 https://docs.gradle.org/current/userguide/building_java_projects.html
 
+https://docs.gradle.org/current/userguide/build_lifecycle.html
+
+https://docs.gradle.org/current/userguide/build_environment.html#sec:configuring_jvm_memory
+
 https://docs.gradle.org/current/userguide/configuration_cache.html
 
 https://docs.gradle.org/current/userguide/build_cache.html
@@ -18,11 +22,11 @@ https://docs.gradle.org/current/userguide/gradle_daemon.html
 
 https://docs.gradle.org/current/userguide/kotlin_dsl.html
 
-https://medium.com/@wasyl/make-your-gradle-builds-fast-again-ea323ce6a435
-
 https://docs.gradle.org/current/userguide/structuring_software_products.html
 
+https://docs.gradle.org/current/userguide/jacoco_plugin.html
 
+https://medium.com/@wasyl/make-your-gradle-builds-fast-again-ea323ce6a435
 
 ```
 asdf update
@@ -45,5 +49,3 @@ gradle init
 
 ./gradlew build
 ```
-
-
