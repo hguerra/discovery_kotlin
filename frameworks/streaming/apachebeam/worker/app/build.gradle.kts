@@ -11,7 +11,11 @@ plugins {
 
     // Apply the application plugin to add support for building a CLI application in Java.
     application
+
+    // CI
     jacoco
+    id("org.jlleitschuh.gradle.ktlint") version "11.5.0"
+    id("io.gitlab.arturbosch.detekt") version "1.23.0"
 }
 
 version = "0.1"
@@ -49,6 +53,17 @@ application {
 
 jacoco {
     toolVersion = "0.8.10"
+}
+
+ktlint {
+    version.set("0.49.1")
+    verbose.set(true)
+}
+
+detekt {
+    toolVersion = "1.23.0"
+    config.setFrom(file("config/detekt/detekt.yml"))
+    buildUponDefaultConfig = true
 }
 
 tasks.named<Test>("test") {
