@@ -66,6 +66,12 @@ detekt {
     buildUponDefaultConfig = true
 }
 
+tasks.withType<Jar> {
+    manifest {
+        attributes["Main-Class"] = "br.com.abc.def.AppKt"
+    }
+}
+
 tasks.named<Test>("test") {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()

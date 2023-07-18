@@ -9,7 +9,12 @@ gradle init
 
 ./gradlew test --tests AppTest
 
+# check tasks executed in build:
+./gradlew build --dry-run
+
 ./gradlew build
+
+java -jar app/build/libs/app-0.1.jar
 
 ./gradlew jacocoTestCoverageVerification
 
