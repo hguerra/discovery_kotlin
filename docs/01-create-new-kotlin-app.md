@@ -14,6 +14,10 @@ https://docs.gradle.org/current/userguide/build_lifecycle.html
 
 https://docs.gradle.org/current/userguide/build_environment.html#sec:configuring_jvm_memory
 
+https://docs.gradle.org/current/userguide/viewing_debugging_dependencies.html
+
+https://docs.gradle.org/current/userguide/performance.html
+
 https://docs.gradle.org/current/userguide/configuration_cache.html
 
 https://docs.gradle.org/current/userguide/build_cache.html
@@ -45,7 +49,9 @@ gradle init
 
 ./gradlew test
 
-./gradlew test --test TestClass
+./gradlew test --tests AppTest
 
 ./gradlew build
+
+./gradlew build --scan
 ```
