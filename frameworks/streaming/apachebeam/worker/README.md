@@ -7,7 +7,7 @@ gradle init
 
 ./gradlew test
 
-./gradlew test --tests AppTest
+./gradlew test --tests ArchTest
 
 # check tasks executed in build:
 ./gradlew build --dry-run

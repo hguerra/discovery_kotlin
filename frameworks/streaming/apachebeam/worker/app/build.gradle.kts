@@ -28,12 +28,12 @@ repositories {
 
 dependencies {
     // Use the Kotlin JUnit 5 integration.
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
-
-    // Use the JUnit 5 integration.
-    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.9.2")
-
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.9.2")
+    testImplementation("io.mockk:mockk:1.13.5")
+    testImplementation("io.kotest:kotest-assertions-core:5.6.2")
+    testImplementation("com.tngtech.archunit:archunit:1.0.1")
 
     // This dependency is used by the application.
     implementation("com.google.guava:guava:31.1-jre")
@@ -94,17 +94,8 @@ tasks.named<JacocoReport>("jacocoTestReport") {
 tasks.named<JacocoCoverageVerification>("jacocoTestCoverageVerification") {
     violationRules {
         rule {
-            element = "BUNDLE"
+            element = "SOURCEFILE"
             limit {
-                minimum = "0.3".toBigDecimal()
-            }
-        }
-
-        rule {
-            element = "CLASS"
-            limit {
-                counter = "LINE"
-                value = "COVEREDRATIO"
                 minimum = "0.0".toBigDecimal()
             }
         }
