@@ -14,9 +14,7 @@ import org.junit.jupiter.api.Test
  * https://github.com/TNG/ArchUnit-Examples/blob/main/example-junit5/src/test/java/com/tngtech/archunit/exampletest/junit5/LayerDependencyRulesTest.java
  *
  * Regras:
- *
  * 1) A camada de dominio (regras de negocio) nao deve depender de outras camadas;
- *
  * 2) A camada de infraestrutura "pode" depender APENAS da camada de dominio;
  */
 class ArchTest {

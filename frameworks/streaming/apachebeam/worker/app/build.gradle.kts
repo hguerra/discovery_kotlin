@@ -15,6 +15,7 @@ plugins {
     // CI
     jacoco
     id("io.gitlab.arturbosch.detekt") version "1.23.0"
+    id("com.ncorti.ktfmt.gradle") version "0.13.0"
 }
 
 version = "0.1"
@@ -67,6 +68,8 @@ tasks.withType<Jar> {
         attributes["Main-Class"] = "br.com.abc.def.AppKt"
     }
 }
+
+ktfmt { kotlinLangStyle() }
 
 tasks.named<Test>("test") {
     // Use JUnit Platform for unit tests.

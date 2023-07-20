@@ -7,7 +7,8 @@ package br.com.abc.def.infra.db.schema
 import java.sql.Connection
 import java.sql.SQLException
 
-const val getPerson = """-- name: getPerson :one
+const val getPerson =
+    """-- name: getPerson :one
 SELECT id, first_name, last_name, email FROM person
 WHERE id = ? LIMIT 1
 """

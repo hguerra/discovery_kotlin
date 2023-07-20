@@ -36,7 +36,12 @@ tasks:
 
   lint:
     cmds:
+      -  ./gradlew ktfmtCheck
       -  ./gradlew detekt
+
+  format:
+    cmds:
+      - ./gradlew ktfmtFormat
 
   test:
     cmds:

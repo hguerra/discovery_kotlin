@@ -3,19 +3,13 @@
  */
 package br.com.abc.def
 
+import br.com.abc.def.domain.Service
 import br.com.abc.def.infra.db.repository.PersonRepository
 import com.zaxxer.hikari.HikariDataSource
 import java.sql.DriverManager
 
-class App {
-    val greeting: String
-        get() {
-            return "Hello World!"
-        }
-}
-
 fun main() {
-    println(App().greeting)
+    println(Service().greeting)
 
     println("-----")
     val url = System.getenv("JDBC_DATABASE_URL")
