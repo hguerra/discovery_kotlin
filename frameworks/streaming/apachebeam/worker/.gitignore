@@ -7,3 +7,14 @@ build
 
 # JetBrains
 .idea/
+
+# Project
+.env
+.env.local
+settings.xml
+bin/
+.docker/
+.dev/
+.task/
+coverage/
+coverage.tar.gz

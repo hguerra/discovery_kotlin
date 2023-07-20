@@ -1,5 +1,7 @@
 # Worker Application
 
+
+Gradle commands:
 ```
 gradle init
 
@@ -23,4 +25,28 @@ java -jar app/build/libs/app-0.1.jar
 ./gradlew ktlintFormat
 
 ./gradlew detekt
+```
+
+
+Taskfile commands:
+```
+task download
+
+task build
+
+task dbUp
+
+task dbInspect
+
+task dbCreateSeed -- 
+
+task dbUpdateMigrationHash
+
+task dbMigrate
+
+task dbCreateMigration -- add_tables
+
+task dbMigrate
+
+task run
 ```

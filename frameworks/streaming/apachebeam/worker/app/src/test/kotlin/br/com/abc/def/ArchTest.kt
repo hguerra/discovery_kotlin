@@ -21,9 +21,13 @@ import org.junit.jupiter.api.Test
  */
 class ArchTest {
     private val basePackage = "br.com.abc.def"
-    private val importedClasses = ClassFileImporter()
-        .withImportOption(ImportOption.Predefined.DO_NOT_INCLUDE_TESTS)
-        .importPackages(basePackage)
+
+    private val importedClasses =
+        ClassFileImporter()
+            .withImportOption(
+                ImportOption.Predefined.DO_NOT_INCLUDE_TESTS,
+            )
+            .importPackages(basePackage)
 
     @Test
     fun `a camada de dominio nao deve depender de outras camadas`() {
