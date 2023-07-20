@@ -12,6 +12,7 @@ build
 .env
 .env.local
 settings.xml
+*.log
 bin/
 .docker/
 .dev/

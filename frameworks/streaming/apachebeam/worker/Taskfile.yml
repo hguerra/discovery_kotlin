@@ -91,3 +91,8 @@ tasks:
   run:
     cmds:
       - ./gradlew run
+
+  runJar:
+    cmds:
+      - task: assemble
+      - java -Dlogback.configurationFile=app/src/main/resources/logback-gcp.xml -jar app/build/libs/app-0.1.jar
