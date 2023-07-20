@@ -32,6 +32,8 @@ Taskfile commands:
 ```
 task download
 
+cp app/config/deployments/.env.dev .env
+
 task build
 
 task dbUp

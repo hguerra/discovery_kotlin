@@ -14,7 +14,6 @@ plugins {
 
     // CI
     jacoco
-    id("org.jlleitschuh.gradle.ktlint") version "11.5.0"
     id("io.gitlab.arturbosch.detekt") version "1.23.0"
 }
 
@@ -37,6 +36,8 @@ dependencies {
 
     // This dependency is used by the application.
     implementation("com.google.guava:guava:31.1-jre")
+    implementation("org.postgresql:postgresql:42.6.0")
+    implementation("com.zaxxer:HikariCP:5.0.1")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
@@ -53,11 +54,6 @@ application {
 
 jacoco {
     toolVersion = "0.8.10"
-}
-
-ktlint {
-    version.set("0.49.1")
-    verbose.set(true)
 }
 
 detekt {

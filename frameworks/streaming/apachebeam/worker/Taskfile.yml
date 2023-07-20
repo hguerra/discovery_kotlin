@@ -1,14 +1,14 @@
 version: "3"
 
 vars:
-  APP_DIR: '{{.USER_WORKING_DIR}}/app'
-  BUILD_DIR: '{{.USER_WORKING_DIR}}/app/build'
-  BIN_DIR: '{{.USER_WORKING_DIR}}/bin'
+  APP_DIR: "{{.USER_WORKING_DIR}}/app"
+  BUILD_DIR: "{{.USER_WORKING_DIR}}/app/build"
+  BIN_DIR: "{{.USER_WORKING_DIR}}/bin"
 
 env:
-  APP_ENV: development
+  APP_ENV: dev
 
-dotenv: ['{{.APP_DIR}}/config/deployments/.env.dev']
+dotenv: [".env"]
 
 tasks:
   download:
@@ -16,6 +16,7 @@ tasks:
       - mkdir -p {{.BIN_DIR}}
       - curl -L https://github.com/hguerra/envsubst/releases/download/v1.0.6/envsubst_linux_amd64 -o ./bin/envsubst && chmod +x ./bin/envsubst
       - curl -L https://release.ariga.io/atlas/atlas-linux-amd64-latest -o ./bin/atlas && chmod +x ./bin/atlas
+      - curl -L https://downloads.sqlc.dev/sqlc_1.19.1_linux_amd64.tar.gz -o ./bin/sqlc.tar.gz && tar -xzvf ./bin/sqlc.tar.gz -C ./bin/ && rm -rf ./bin/sqlc.tar.gz && chmod +x ./bin/sqlc
 
   clean:
     cmds:
@@ -35,12 +36,7 @@ tasks:
 
   lint:
     cmds:
-      -  ./gradlew ktlintCheck
       -  ./gradlew detekt
-
-  format:
-    cmds:
-      - ./gradlew ktlintFormat
 
   test:
     cmds:
@@ -56,32 +52,36 @@ tasks:
 
   dbInspect:
     cmds:
-      - bin/atlas schema inspect -c file://app/config/db/atlas.hcl --env development
+      - bin/atlas schema inspect -c file://app/config/db/atlas.hcl --env ${APP_ENV}
 
   dbCreateSeed:
     cmds:
-      - atlas migrate new {{.CLI_ARGS}} -c file://app/config/db/atlas.hcl --env development
+      - bin/atlas migrate new {{.CLI_ARGS}} -c file://app/config/db/atlas.hcl --env ${APP_ENV}
 
   dbCreateMigration:
     cmds:
-      - atlas migrate diff {{.CLI_ARGS}} -c file://app/config/db/atlas.hcl --env development
+      - bin/atlas migrate diff {{.CLI_ARGS}} -c file://app/config/db/atlas.hcl --env ${APP_ENV}
 
   dbMigrate:
     cmds:
-      - atlas migrate apply -c file://app/config/db/atlas.hcl --env development
-      - atlas schema inspect --format "{{`{{ sql . }}`}}" -c file://app/config/db/atlas.hcl --env development > ./app/config/db/schema.sql
+      - bin/atlas migrate apply -c file://app/config/db/atlas.hcl --env ${APP_ENV}
+      - bin/atlas schema inspect --format "{{`{{ sql . }}`}}" -c file://app/config/db/atlas.hcl --exclude "atlas_schema_revisions" --env ${APP_ENV} > ./app/config/db/schema.sql
 
   dbUpdateMigrationHash:
     cmds:
-      - atlas migrate hash -c file://app/config/db/atlas.hcl --env development
+      - bin/atlas migrate hash -c file://app/config/db/atlas.hcl --env ${APP_ENV}
 
   dbValidate:
     cmds:
-      - atlas migrate validate -c file://app/config/db/atlas.hcl --env development
+      - bin/atlas migrate validate -c file://app/config/db/atlas.hcl --env ${APP_ENV}
 
   dbLint:
     cmds:
-      - atlas migrate lint -c file://app/config/db/atlas.hcl --env development
+      - bin/atlas migrate lint -c file://app/config/db/atlas.hcl --env ${APP_ENV}
+
+  dbGenerateCode:
+    cmds:
+      - bin/sqlc -f app/config/db/sqlc.yaml generate
 
   run:
     cmds:

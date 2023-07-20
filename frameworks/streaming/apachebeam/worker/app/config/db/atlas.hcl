@@ -34,7 +34,7 @@ lint {
   }
 }
 
-env "development" {
+env "dev" {
   src = "file://app/config/db/schema.hcl"
   url = "postgres://docker:docker@localhost:5432/docker?search_path=public&sslmode=disable"
   dev = "postgres://docker:docker@localhost:5432/template_postgis?search_path=public&sslmode=disable"
@@ -44,7 +44,7 @@ env "development" {
   }
 }
 
-env "production" {
+env "prod" {
   src = "./app/config/db/schema.hcl"
   url = "postgres://docker:docker@localhost:5432/docker?search_path=public&sslmode=disable"
 
