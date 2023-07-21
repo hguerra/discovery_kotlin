@@ -3,41 +3,44 @@
  */
 package br.com.abc.def
 
-import br.com.abc.def.domain.Service
-import br.com.abc.def.infra.db.repository.PersonRepository
-import com.zaxxer.hikari.HikariDataSource
-import java.sql.DriverManager
+import br.com.abc.def.app.web.DummyController
+import org.apache.beam.sdk.Pipeline
+import org.apache.beam.sdk.options.Default
+import org.apache.beam.sdk.options.Description
+import org.apache.beam.sdk.options.PipelineOptions
+import org.apache.beam.sdk.options.PipelineOptionsFactory
+import org.apache.beam.sdk.transforms.Create
+import org.apache.beam.sdk.transforms.MapElements
+import org.apache.beam.sdk.transforms.SimpleFunction
+import org.apache.beam.sdk.values.PCollection
+import org.slf4j.LoggerFactory
 
-fun main() {
-  println("-----")
-  println(Service().greeting)
+interface Options : PipelineOptions {
+  @get:Description("Input text to print.")
+  @get:Default.String("My input text")
+  var inputText: String
+}
 
-  println("-----")
-  println(System.getProperty("Logback.configurationFile"))
+class PrintElement : SimpleFunction<String, String>() {
+  override fun apply(element: String): String {
+    println(element)
+    return element
+  }
+}
 
-  println("-----")
-  val url = System.getenv("JDBC_DATABASE_URL")
-  val connection1 = DriverManager.getConnection(url)
-  println(connection1.isValid(0))
+fun buildPipeline(pipeline: Pipeline, inputText: String): PCollection<String> =
+    pipeline
+        .apply("Create elements", Create.of("Hello", "World!", inputText))
+        .apply("Print elements", MapElements.via(PrintElement()))
 
-  println("-----")
-  val dataSource =
-      HikariDataSource().apply {
-        jdbcUrl = System.getenv("JDBC_DATABASE_URL")
-        poolName = "google-cloud-dataflow-worker"
-        isAutoCommit = false
-        connectionTimeout = 30000
-        validationTimeout = 5000
-        idleTimeout = 600000
-        minimumIdle = 10
-        maximumPoolSize = 10
-      }
+fun main(args: Array<String>) {
+  val logger = LoggerFactory.getLogger(DummyController::class.java)
+  logger.info(
+    "Java System Property '-Dlogback.configurationFile=${System.getProperty("logback.configurationFile")}'"
+  )
 
-  println("-----")
-  val connection2 = dataSource.connection
-  println(connection2.isValid(0))
-
-  println("-----")
-  val repo = PersonRepository(connection2)
-  println(repo.findById(1L))
+  val options = PipelineOptionsFactory.fromArgs(*args).withValidation().`as`(Options::class.java)
+  val pipeline = Pipeline.create(options)
+  buildPipeline(pipeline, options.inputText)
+  pipeline.run().waitUntilFinish()
 }

@@ -47,6 +47,22 @@ tasks:
     cmds:
       - ./gradlew test
 
+  run:
+    cmds:
+      - ./gradlew run
+
+  runArgs:
+    cmds:
+      - ./gradlew run --args="--inputText=\"🎉\""
+
+  runDataflow:
+    - ./gradlew -Pdataflow-runner run --args="--runner=DataflowRunner --project=<your-gcp-project> --region=<your-gcp-region> --gcpTempLocation=gs://<your-gcs-bucket>/tmp --inputText=\"🎉\""
+
+  runJar:
+    cmds:
+      - ./gradlew jar
+      - java -Dlogback.configurationFile=app/src/main/resources/logback.xml -jar app/build/app-0.1.jar
+
   dbUp:
     cmds:
       - docker compose up -d
@@ -87,12 +103,3 @@ tasks:
   dbGenerateCode:
     cmds:
       - bin/sqlc -f app/config/db/sqlc.yaml generate
-
-  run:
-    cmds:
-      - ./gradlew run
-
-  runJar:
-    cmds:
-      - task: assemble
-      - java -Dlogback.configurationFile=app/src/main/resources/logback-gcp.xml -jar app/build/libs/app-0.1.jar

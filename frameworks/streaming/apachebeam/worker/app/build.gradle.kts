@@ -21,13 +21,26 @@ plugins {
 version = "0.1"
 group = "br.com.abc"
 
+val appMainClass = "br.com.abc.def.AppKt"
+
+// Dependencies versions.
+val beamVersion = "2.49.0"
+
 repositories {
   // Use Maven Central for resolving dependencies.
   mavenCentral()
+
+  maven {
+    url = uri("https://packages.confluent.io/maven/")
+  }
 }
 
 dependencies {
-  // Use the Kotlin JUnit 5 integration.
+  // Kotlin dependencies.
+  implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
+  implementation("org.jetbrains.kotlin:kotlin-stdlib")
+
+  // Test dependencies.
   testRuntimeOnly("org.junit.platform:junit-platform-launcher")
   testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
   testImplementation("org.junit.jupiter:junit-jupiter-engine:5.9.2")
@@ -35,16 +48,23 @@ dependencies {
   testImplementation("io.kotest:kotest-assertions-core:5.6.2")
   testImplementation("com.tngtech.archunit:archunit:1.0.1")
 
-  // This dependency is used by the application.
+  // App dependencies.
   implementation("org.slf4j:slf4j-api:2.0.7")
-  implementation("ch.qos.logback:logback-core:1.4.8")
   implementation("ch.qos.logback:logback-classic:1.4.8")
   implementation("com.google.guava:guava:31.1-jre")
   implementation("org.postgresql:postgresql:42.6.0")
   implementation("com.zaxxer:HikariCP:5.0.1")
 
+  // Apache Beam
+  implementation("org.apache.beam:beam-sdks-java-core:${beamVersion}")
+  implementation("org.apache.beam:beam-runners-direct-java:${beamVersion}")
+
   // GCP
   implementation("com.google.cloud:google-cloud-logging-logback:0.130.17-alpha")
+
+  if (project.hasProperty("dataflow-runner")) {
+    runtimeOnly("org.apache.beam:beam-runners-google-cloud-dataflow-java:${beamVersion}")
+  }
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
@@ -56,7 +76,7 @@ java {
 
 application {
   // Define the main class for the application.
-  mainClass.set("br.com.abc.def.AppKt")
+  mainClass.set(appMainClass)
 }
 
 jacoco {
@@ -67,12 +87,6 @@ detekt {
   toolVersion = "1.23.0"
   config.setFrom(file("config/detekt/detekt.yml"))
   buildUponDefaultConfig = true
-}
-
-tasks.withType<Jar> {
-  manifest {
-    attributes["Main-Class"] = "br.com.abc.def.AppKt"
-  }
 }
 
 tasks.named<Test>("test") {
@@ -102,5 +116,24 @@ tasks.named<JacocoCoverageVerification>("jacocoTestCoverageVerification") {
         minimum = "0.0".toBigDecimal()
       }
     }
+  }
+}
+
+// Package a self-contained jar file.
+tasks.jar {
+  archiveBaseName.set("app")
+  destinationDirectory.set(file("build"))
+  manifest { attributes("Main-Class" to appMainClass) }
+  exclude("META-INF/*.SF")
+  exclude("META-INF/*.DSA")
+  exclude("META-INF/*.RSA")
+  duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+  from({ configurations.runtimeClasspath.get().map(::zipTree) })
+}
+
+// Set logback config file.
+tasks.withType<JavaExec> {
+  if (project.hasProperty("dataflow-runner")) {
+    systemProperty("logback.configurationFile", "app/src/main/resources/logback-gcp.xml")
   }
 }
