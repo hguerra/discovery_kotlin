@@ -16,7 +16,9 @@ gradle init
 
 ./gradlew build
 
-java -jar app/build/libs/app-0.1.jar
+./gradlew jar
+export JDBC_DATABASE_URL="jdbc:postgresql://localhost/docker?user=docker&password=docker&sslmode=disable"
+java -jar app/build/app-0.1.jar
 
 ./gradlew jacocoTestCoverageVerification
 
