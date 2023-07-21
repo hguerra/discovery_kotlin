@@ -53,7 +53,10 @@ tasks:
 
   runArgs:
     cmds:
-      - ./gradlew run --args=--inputText="🎉"
+      - ./gradlew run --args="--inputText=\"🎉\""
+
+  runDataflow:
+    - ./gradlew -Pdataflow-runner run --args="--runner=DataflowRunner --project=<your-gcp-project> --region=<your-gcp-region> --gcpTempLocation=gs://<your-gcs-bucket>/tmp --inputText=\"🎉\""
 
   runJar:
     cmds:

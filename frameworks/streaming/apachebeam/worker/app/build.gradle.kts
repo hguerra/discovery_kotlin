@@ -58,10 +58,13 @@ dependencies {
   // Apache Beam
   implementation("org.apache.beam:beam-sdks-java-core:${beamVersion}")
   implementation("org.apache.beam:beam-runners-direct-java:${beamVersion}")
-  implementation("org.slf4j:slf4j-jdk14:2.0.7")
 
   // GCP
   implementation("com.google.cloud:google-cloud-logging-logback:0.130.17-alpha")
+
+  if (project.hasProperty("dataflow-runner")) {
+    runtimeOnly("org.apache.beam:beam-runners-google-cloud-dataflow-java:${beamVersion}")
+  }
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
