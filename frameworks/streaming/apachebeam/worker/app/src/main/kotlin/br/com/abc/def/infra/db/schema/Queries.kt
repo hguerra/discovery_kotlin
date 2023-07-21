@@ -7,6 +7,5 @@ package br.com.abc.def.infra.db.schema
 import java.sql.SQLException
 
 interface Queries {
-  @Throws(SQLException::class)
-  fun getPerson(id: Long): Person?
+    @Throws(SQLException::class) fun getPerson(id: Long): Person?
 }
