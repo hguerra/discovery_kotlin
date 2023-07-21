@@ -24,6 +24,10 @@ group = "br.com.abc"
 repositories {
   // Use Maven Central for resolving dependencies.
   mavenCentral()
+
+  maven {
+    url = uri("https://packages.confluent.io/maven/")
+  }
 }
 
 dependencies {
@@ -44,7 +48,12 @@ dependencies {
   implementation("com.zaxxer:HikariCP:5.0.1")
 
   // GCP
+//  https://github.com/apache/beam-starter-kotlin/blob/main/app/build.gradle.kts
   implementation("com.google.cloud:google-cloud-logging-logback:0.130.17-alpha")
+  implementation("org.apache.beam:beam-sdks-java-core:2.48.0")
+  implementation("org.apache.beam:beam-runners-google-cloud-dataflow-java:2.48.0")
+  runtimeOnly("org.apache.beam:beam-runners-direct-java:2.48.0")
+  runtimeOnly("org.slf4j:slf4j-jdk14:2.0.7")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
@@ -103,4 +112,16 @@ tasks.named<JacocoCoverageVerification>("jacocoTestCoverageVerification") {
       }
     }
   }
+}
+
+tasks.named<JavaExec>("dataflow") {
+//  mainClass = "$mainClassName"
+//  classpath = sourceSets.main.out
+
+  args = mutableListOf(
+    "--runner=DataflowRunner",
+    "--project=myproject",
+    "--region=us-central1",
+    "--gcpTempLocation=bucket/temp"
+  )
 }
