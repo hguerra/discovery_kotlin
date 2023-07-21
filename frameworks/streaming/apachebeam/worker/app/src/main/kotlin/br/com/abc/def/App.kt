@@ -3,41 +3,8 @@
  */
 package br.com.abc.def
 
-import br.com.abc.def.domain.Service
-import br.com.abc.def.infra.db.repository.PersonRepository
-import com.zaxxer.hikari.HikariDataSource
-import java.sql.DriverManager
+import br.com.abc.def.app.web.DummyController
 
 fun main() {
-  println("-----")
-  println(Service().greeting)
-
-  println("-----")
-  println(System.getProperty("Logback.configurationFile"))
-
-  println("-----")
-  val url = System.getenv("JDBC_DATABASE_URL")
-  val connection1 = DriverManager.getConnection(url)
-  println(connection1.isValid(0))
-
-  println("-----")
-  val dataSource =
-      HikariDataSource().apply {
-        jdbcUrl = System.getenv("JDBC_DATABASE_URL")
-        poolName = "google-cloud-dataflow-worker"
-        isAutoCommit = false
-        connectionTimeout = 30000
-        validationTimeout = 5000
-        idleTimeout = 600000
-        minimumIdle = 10
-        maximumPoolSize = 10
-      }
-
-  println("-----")
-  val connection2 = dataSource.connection
-  println(connection2.isValid(0))
-
-  println("-----")
-  val repo = PersonRepository(connection2)
-  println(repo.findById(1L))
+  DummyController().perform()
 }

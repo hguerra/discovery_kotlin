@@ -41,7 +41,6 @@ dependencies {
 
   // This dependency is used by the application.
   implementation("org.slf4j:slf4j-api:2.0.7")
-  implementation("ch.qos.logback:logback-core:1.4.8")
   implementation("ch.qos.logback:logback-classic:1.4.8")
   implementation("com.google.guava:guava:31.1-jre")
   implementation("org.postgresql:postgresql:42.6.0")
@@ -50,10 +49,6 @@ dependencies {
   // GCP
 //  https://github.com/apache/beam-starter-kotlin/blob/main/app/build.gradle.kts
   implementation("com.google.cloud:google-cloud-logging-logback:0.130.17-alpha")
-  implementation("org.apache.beam:beam-sdks-java-core:2.48.0")
-  implementation("org.apache.beam:beam-runners-google-cloud-dataflow-java:2.48.0")
-  runtimeOnly("org.apache.beam:beam-runners-direct-java:2.48.0")
-  runtimeOnly("org.slf4j:slf4j-jdk14:2.0.7")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
@@ -112,16 +107,4 @@ tasks.named<JacocoCoverageVerification>("jacocoTestCoverageVerification") {
       }
     }
   }
-}
-
-tasks.named<JavaExec>("dataflow") {
-//  mainClass = "$mainClassName"
-//  classpath = sourceSets.main.out
-
-  args = mutableListOf(
-    "--runner=DataflowRunner",
-    "--project=myproject",
-    "--region=us-central1",
-    "--gcpTempLocation=bucket/temp"
-  )
 }
