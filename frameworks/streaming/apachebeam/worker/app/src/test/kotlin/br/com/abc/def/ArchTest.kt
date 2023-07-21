@@ -18,34 +18,34 @@ import org.junit.jupiter.api.Test
  * 2) A camada de infraestrutura "pode" depender APENAS da camada de dominio;
  */
 class ArchTest {
-    private val basePackage = "br.com.abc.def"
+  private val basePackage = "br.com.abc.def"
 
-    private val importedClasses =
-        ClassFileImporter()
-            .withImportOption(
-                ImportOption.Predefined.DO_NOT_INCLUDE_TESTS,
-            )
-            .importPackages(basePackage)
+  private val importedClasses =
+      ClassFileImporter()
+          .withImportOption(
+              ImportOption.Predefined.DO_NOT_INCLUDE_TESTS,
+          )
+          .importPackages(basePackage)
 
-    @Test
-    fun `a camada de dominio nao deve depender de outras camadas`() {
-        noClasses()
-            .that()
-            .resideInAnyPackage("$basePackage.domain..")
-            .should()
-            .dependOnClassesThat()
-            .resideInAnyPackage("$basePackage.infra..", "$basePackage.app..")
-            .check(importedClasses)
-    }
+  @Test
+  fun `a camada de dominio nao deve depender de outras camadas`() {
+    noClasses()
+        .that()
+        .resideInAnyPackage("$basePackage.domain..")
+        .should()
+        .dependOnClassesThat()
+        .resideInAnyPackage("$basePackage.infra..", "$basePackage.app..")
+        .check(importedClasses)
+  }
 
-    @Test
-    fun `a camada de infraestrutura pode depender apenas da camada de dominio`() {
-        noClasses()
-            .that()
-            .resideInAnyPackage("$basePackage.infra..")
-            .should()
-            .dependOnClassesThat()
-            .resideInAnyPackage("$basePackage.app..")
-            .check(importedClasses)
-    }
+  @Test
+  fun `a camada de infraestrutura pode depender apenas da camada de dominio`() {
+    noClasses()
+        .that()
+        .resideInAnyPackage("$basePackage.infra..")
+        .should()
+        .dependOnClassesThat()
+        .resideInAnyPackage("$basePackage.app..")
+        .check(importedClasses)
+  }
 }

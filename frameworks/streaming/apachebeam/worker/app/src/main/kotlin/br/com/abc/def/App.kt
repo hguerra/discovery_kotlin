@@ -9,35 +9,35 @@ import com.zaxxer.hikari.HikariDataSource
 import java.sql.DriverManager
 
 fun main() {
-    println("-----")
-    println(Service().greeting)
+  println("-----")
+  println(Service().greeting)
 
-    println("-----")
-    println(System.getProperty("Logback.configurationFile"))
+  println("-----")
+  println(System.getProperty("Logback.configurationFile"))
 
-    println("-----")
-    val url = System.getenv("JDBC_DATABASE_URL")
-    val connection1 = DriverManager.getConnection(url)
-    println(connection1.isValid(0))
+  println("-----")
+  val url = System.getenv("JDBC_DATABASE_URL")
+  val connection1 = DriverManager.getConnection(url)
+  println(connection1.isValid(0))
 
-    println("-----")
-    val dataSource =
-        HikariDataSource().apply {
-            jdbcUrl = System.getenv("JDBC_DATABASE_URL")
-            poolName = "google-cloud-dataflow-worker"
-            isAutoCommit = false
-            connectionTimeout = 30000
-            validationTimeout = 5000
-            idleTimeout = 600000
-            minimumIdle = 10
-            maximumPoolSize = 10
-        }
+  println("-----")
+  val dataSource =
+      HikariDataSource().apply {
+        jdbcUrl = System.getenv("JDBC_DATABASE_URL")
+        poolName = "google-cloud-dataflow-worker"
+        isAutoCommit = false
+        connectionTimeout = 30000
+        validationTimeout = 5000
+        idleTimeout = 600000
+        minimumIdle = 10
+        maximumPoolSize = 10
+      }
 
-    println("-----")
-    val connection2 = dataSource.connection
-    println(connection2.isValid(0))
+  println("-----")
+  val connection2 = dataSource.connection
+  println(connection2.isValid(0))
 
-    println("-----")
-    val repo = PersonRepository(connection2)
-    println(repo.findById(1L))
+  println("-----")
+  val repo = PersonRepository(connection2)
+  println(repo.findById(1L))
 }

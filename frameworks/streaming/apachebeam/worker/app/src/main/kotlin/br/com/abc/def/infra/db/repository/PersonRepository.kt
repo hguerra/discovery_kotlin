@@ -5,7 +5,7 @@ import br.com.abc.def.infra.db.schema.QueriesImpl
 import java.sql.Connection
 
 class PersonRepository(private val conn: Connection) {
-    fun findById(id: Long): Person? {
-        return QueriesImpl(this.conn).getPerson(id)
-    }
+  fun findById(id: Long): Person? {
+    return QueriesImpl(this.conn).getPerson(id)
+  }
 }

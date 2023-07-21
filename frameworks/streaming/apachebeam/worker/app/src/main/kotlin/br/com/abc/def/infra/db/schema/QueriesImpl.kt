@@ -14,26 +14,26 @@ WHERE id = ? LIMIT 1
 """
 
 class QueriesImpl(private val conn: Connection) : Queries {
-    @Throws(SQLException::class)
-    override fun getPerson(id: Long): Person? {
-        return conn.prepareStatement(getPerson).use { stmt ->
-            stmt.setLong(1, id)
+  @Throws(SQLException::class)
+  override fun getPerson(id: Long): Person? {
+    return conn.prepareStatement(getPerson).use { stmt ->
+      stmt.setLong(1, id)
 
-            val results = stmt.executeQuery()
-            if (!results.next()) {
-                return null
-            }
-            val ret =
-                Person(
-                    results.getLong(1),
-                    results.getString(2),
-                    results.getString(3),
-                    results.getString(4),
-                )
-            if (results.next()) {
-                throw SQLException("expected one row in result set, but got many")
-            }
-            ret
-        }
+      val results = stmt.executeQuery()
+      if (!results.next()) {
+        return null
+      }
+      val ret =
+          Person(
+              results.getLong(1),
+              results.getString(2),
+              results.getString(3),
+              results.getString(4),
+          )
+      if (results.next()) {
+        throw SQLException("expected one row in result set, but got many")
+      }
+      ret
     }
+  }
 }
