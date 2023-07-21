@@ -47,6 +47,19 @@ tasks:
     cmds:
       - ./gradlew test
 
+  run:
+    cmds:
+      - ./gradlew run
+
+  runArgs:
+    cmds:
+      - ./gradlew run --args=--inputText="🎉"
+
+  runJar:
+    cmds:
+      - ./gradlew jar
+      - java -jar app/build/app-0.1.jar
+
   dbUp:
     cmds:
       - docker compose up -d
@@ -87,16 +100,3 @@ tasks:
   dbGenerateCode:
     cmds:
       - bin/sqlc -f app/config/db/sqlc.yaml generate
-
-  run:
-    cmds:
-      - ./gradlew run
-
-  runArgs:
-    cmds:
-      - ./gradlew run --args=--inputText="🎉"
-
-  runJar:
-    cmds:
-      - ./gradlew jar
-      - java -jar app/build/app-0.1.jar
