@@ -92,6 +92,10 @@ tasks:
     cmds:
       - ./gradlew run
 
+  runArgs:
+    cmds:
+      - ./gradlew run --args=--inputText="🎉"
+
   runJar:
     cmds:
       - ./gradlew jar

@@ -23,6 +23,9 @@ group = "br.com.abc"
 
 val appMainClass = "br.com.abc.def.AppKt"
 
+// Dependencies versions.
+val beamVersion = "2.49.0"
+
 repositories {
   // Use Maven Central for resolving dependencies.
   mavenCentral()
@@ -51,6 +54,11 @@ dependencies {
   implementation("com.google.guava:guava:31.1-jre")
   implementation("org.postgresql:postgresql:42.6.0")
   implementation("com.zaxxer:HikariCP:5.0.1")
+
+  // Apache Beam
+  implementation("org.apache.beam:beam-sdks-java-core:${beamVersion}")
+  implementation("org.apache.beam:beam-runners-direct-java:${beamVersion}")
+  implementation("org.slf4j:slf4j-jdk14:2.0.7")
 
   // GCP
   implementation("com.google.cloud:google-cloud-logging-logback:0.130.17-alpha")
