@@ -61,7 +61,7 @@ tasks:
   runJar:
     cmds:
       - ./gradlew jar
-      - java -jar app/build/app-0.1.jar
+      - java -Dlogback.configurationFile=app/src/main/resources/logback.xml -jar app/build/app-0.1.jar
 
   dbUp:
     cmds:

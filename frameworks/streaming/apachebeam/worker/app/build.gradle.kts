@@ -130,3 +130,10 @@ tasks.jar {
   duplicatesStrategy = DuplicatesStrategy.EXCLUDE
   from({ configurations.runtimeClasspath.get().map(::zipTree) })
 }
+
+// Set logback config file.
+tasks.withType<JavaExec> {
+  if (project.hasProperty("dataflow-runner")) {
+    systemProperty("logback.configurationFile", "app/src/main/resources/logback-gcp.xml")
+  }
+}
